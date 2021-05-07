@@ -10,13 +10,17 @@
 // No boiler plate code this time,
 // you can do this!
 
-// I AM NOT DONE
-
 trait AppendBar {
+    // Note that this fn takes ownership of self
     fn append_bar(self) -> Self;
 }
 
-//TODO: Add your code here
+impl AppendBar for Vec<String> {
+    fn append_bar(mut self) -> Self {
+        self.push(String::from("Bar"));
+        self
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -27,5 +31,12 @@ mod tests {
         let mut foo = vec![String::from("Foo")].append_bar();
         assert_eq!(foo.pop().unwrap(), String::from("Bar"));
         assert_eq!(foo.pop().unwrap(), String::from("Foo"));
+    }
+
+    #[test]
+    fn custom_test() {
+        let foo = vec![String::from("Foo")];
+        let mut foo2 = foo.append_bar();
+        assert_eq!(foo2.pop().unwrap(), String::from("Bar"));
     }
 }

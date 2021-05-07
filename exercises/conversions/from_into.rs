@@ -33,10 +33,23 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of Person
 // Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
+use std::sync::Mutex;
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        let s: Vec<&str> = s.split(',').collect();
+        if s.len() != 2 {
+            return Person::default();
+        }
+        // This is safe since we checked the length
+        match (s[0], s[1].parse::<usize>()) {
+            ("", _) => Person::default(),
+            (name, Ok(age)) => Person {
+                name: String::from(name),
+                age: age,
+            },
+            _ => Person::default(),
+        }
     }
 }
 
